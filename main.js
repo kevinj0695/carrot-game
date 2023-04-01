@@ -25,4 +25,30 @@ function getCoordY() {
   return Math.random() * (bottom - y);
 }
 
-coordAssign();
+const startBtn = document.querySelector('.game__start-btn');
+const stopBtn = document.querySelector('.game__stop-btn');
+startBtn.addEventListener('click', () => {
+  gameFields.classList.add('show');
+  coordAssign();
+  setTimer(10, 0);
+  startBtn.classList.remove('show');
+  stopBtn.classList.add('show');
+});
+
+gameFields.addEventListener('click', (event) => {
+  const target = event.target;
+  if (target.classList[0] !== 'game__field') {
+    target.remove();
+  }
+});
+
+function setTimer(from, to) {
+  let current = from;
+  const timer = document.querySelector('.game__timer');
+  let timerId = setInterval(() => {
+    timer.innerText = `0:0${--current}`;
+    if (current === to) {
+      clearInterval(timerId);
+    }
+  }, 1000)
+}
