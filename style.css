@@ -85,6 +85,45 @@ body {
   transform: scale(1.1);
 }
 
+/* modals */
+.game__modals {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 30px auto;
+  width: 600px;
+  height: 250px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 64px;
+  text-align: center;
+  display: none;
+}
+.game__modals.show {
+  display: block;
+}
+.game__retry-btn {
+  background-color: antiquewhite;
+  border: 2px solid black;
+  width: 60px;
+  height: 60px;
+  font-size: 35px;
+}
+.game__retry-btn:hover {
+  transform: scale(1.1);
+}
+.game__retry-btn > i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal--win, .modal--lose, .modal--retry {
+  display: none;
+}
+.modal--win.show, .modal--lose.show, .modal--retry.show {
+  display: block;
+}
+
 @media (max-width: 1000px) {
   .game__container {
     width: 600px;

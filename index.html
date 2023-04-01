@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>carrot-game!</title>
   <link rel="stylesheet" href="./style.css">
+  <link rel="short icon" href="#">
   <!-- fontawesome kit -->
   <script src="https://kit.fontawesome.com/d7134871a2.js" crossorigin="anonymous"></script>
   <script defer src="./main.js"></script>
@@ -42,8 +43,19 @@
           <img class="bug" src="./carrot/img/bug.png" alt="">
           <img class="bug" src="./carrot/img/bug.png" alt="">
         </div>
+        <div class="game__modals">
+          <button class="game__retry-btn"><i class="fa-solid fa-rotate-left"></i></button>
+          <div class="modal--win">You Wins! 🎉</div>
+          <div class="modal--lose">You Lose! 💩</div>
+          <div class="modal--retry">Retry? ❓</div>
+        </div>
       </div>
     </div>
   </section>
+  <audio class="bg-audio" src="./carrot/sound/bg.mp3"></audio>
+  <audio class="carrot-audio" src="./carrot/sound/carrot_pull.mp3"></audio>
+  <audio class="bug-audio" src="./carrot/sound/bug_pull.mp3"></audio>
+  <audio class="win-audio" src="./carrot/sound/game_win.mp3"></audio>
+  <audio class="alert-audio" src="./carrot/sound/alert.wav"></audio>
 </body>
 </html>
