@@ -1,9 +1,23 @@
+`use strict`;
+
 const gameFields = document.querySelector('.game__field');
+const carrots = document.querySelectorAll('.carrot');
+const bugs = document.querySelectorAll('.bug');
+
+const modal = document.querySelector('.game__modals');
+const modalWin = document.querySelector('.modal--win');
+const modalLose = document.querySelector('.modal--lose');
+const modalRetry = document.querySelector('.modal--retry');
+
+const bgAudio = document.querySelector('.bg-audio');
+const carrotAudio = document.querySelector('.carrot-audio');
+const bugAudio = document.querySelector('.bug-audio');
+const winAudio = document.querySelector('.win-audio');
+const alertAudio = document.querySelector('.alert-audio');
+
 
 // deal with coordinates
 function coordAssign() {
-  const carrots = document.querySelectorAll('.carrot');
-  const bugs = document.querySelectorAll('.bug');
   carrots.forEach(carrot => {
     carrot.style.top = `${getCoordY()}px`;
     carrot.style.left = `${getCoordX()}px`;
@@ -31,10 +45,10 @@ const retryBtn = document.querySelector('.game__retry-btn');
 startBtn.addEventListener('click', () => {
   gameFields.classList.add('show');
   coordAssign();
-  setTimer(10, 0);
+  setTimer(GAME_DURATION_SEC);
   startBtn.classList.remove('show');
   stopBtn.classList.add('show');
-  startBgAudio();
+  startSound(bgAudio);
 });
 const stopBtnListener = () => {
   stopTimer();
@@ -52,7 +66,8 @@ const gameFieldsListener = (event) => {
     carrotCounter();
     target.remove();
   } else if (target.classList[0] === 'bug') {
-    pullBugAudio();
+    stopSound(bgAudio);
+    startSound(bugAudio);
     stopTimer();
     showModal('lose');
     target.remove();
@@ -63,12 +78,12 @@ gameFields.addEventListener('click', gameFieldsListener);
 
 // Timer
 let timerId;
-function setTimer(from, to) {
+function setTimer(from) {
   let current = from;
   const timer = document.querySelector('.game__timer');
   timerId = setInterval(() => {
     timer.innerText = `0:0${--current}`;
-    if (current === to) {
+    if (current === 0) {
       clearInterval(timerId);
       showModal('lose');
     }
@@ -83,77 +98,44 @@ function stopTimer() {
 function carrotCounter() {
   const gameCounter = document.querySelector('.game__counter');
   gameCounter.innerText = gameCounter.innerText - 1;
-  pullCarrotAudio();
-
+  startSound(carrotAudio);
+  
   if (gameCounter.innerText == 0) {
     stopTimer();
     showModal('win');
   }
 }
 
-// modals
-const modal = document.querySelector('.game__modals');
-const modalWin = document.querySelector('.modal--win');
-const modalLose = document.querySelector('.modal--lose');
-const modalRetry = document.querySelector('.modal--retry');
-
 function showModal(property) {
   switch (property) {
     case 'win' :
       modal.classList.add('show');
       modalWin.classList.add('show');
-      winGameAudio();
+      stopSound(bgAudio);
+      startSound(winAudio);
       break;
     case 'lose' :
       modal.classList.add('show');
       modalLose.classList.add('show');
-      alertGameAudio();
       break;
     case 'retry' :
       modal.classList.add('show');
       modalRetry.classList.add('show');
-      alertGameAudio();
+      stopSound(bgAudio);
+      startSound(alertAudio);
       break;
-    default:
-      console.error('property에 case가 아닌 값이 들어옴');
   }
 
   stopBtn.removeEventListener('click', stopBtnListener);
   gameFields.removeEventListener('click', gameFieldsListener);
 }
 
-// audio
-const bgAudio = document.querySelector('.bg-audio');
-function startBgAudio() {
-  bgAudio.volume = 0.5;
-  bgAudio.play();
-}
-function pauseBgAudio() {
-  bgAudio.pause();
+function startSound(sound) {
+  sound.currentTime = 0;
+  sound.volume = 0.5;
+  sound.play();
 }
 
-const carrotAudio = document.querySelector('.carrot-audio');
-function pullCarrotAudio() {
-  carrotAudio.volume = 0.5;
-  carrotAudio.play();
-}
-
-const bugAudio = document.querySelector('.bug-audio');
-function pullBugAudio() {
-  bugAudio.volume = 0.5;
-  bugAudio.play();
-}
-
-const winAudio = document.querySelector('.win-audio');
-function winGameAudio() {
-  pauseBgAudio();
-  winAudio.volume = 0.5;
-  winAudio.play();
-}
-
-const alertAudio = document.querySelector('.alert-audio');
-function alertGameAudio() {
-  pauseBgAudio();
-  alertAudio.volume = 0.5;
-  alertAudio.play();
+function stopSound(sound) {
+  sound.pause();
 }
